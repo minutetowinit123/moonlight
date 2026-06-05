@@ -310,10 +310,13 @@ for(let i=0;i<140;i++){
 
 /* Tabs */
 function switchTab(name){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===name));
+  document.querySelectorAll('[data-tab]').forEach(t=>t.classList.toggle('active',t.dataset.tab===name));
   document.querySelectorAll('.pview').forEach(p=>p.classList.toggle('active',p.id===name+'-page'));
+  if(name === 'movies' && mvMoviesReady && window.mvDoLoad) {
+    window.mvDoLoad();
+  }
 }
-document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.tab)));
+document.querySelectorAll('[data-tab]').forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.tab)));
 
 /* Background editor */
 function updateBg(){
@@ -333,6 +336,7 @@ function applyPreset(a,b,c){
 }
 
 /* MOONLIGHT MOVIES — TMDB v3 */
+let mvMoviesReady = false;
 (function () {
   var API_KEY  = 'ee533ebaec5bb9f6bb448a66c1d4ad08';
   var BASE     = 'https://api.themoviedb.org/3';
@@ -353,9 +357,6 @@ function applyPreset(a,b,c){
       .then(cb)
       .catch(function (err) {
         var msg = 'Error: ' + err.message;
-        if (err.message === 'Failed to fetch' || /network|cors/i.test(err.message)) {
-          msg += ' — Open via HTTP, not file://  (python3 -m http.server 8080)';
-        }
         setStatus(msg);
       });
   }
@@ -437,16 +438,18 @@ function applyPreset(a,b,c){
     elSearch.value = '';
     document.getElementById('mvTabMovies').classList.toggle('active', type === 'movie');
     document.getElementById('mvTabTV').classList.toggle('active', type === 'tv');
-    elPageLbl.textContent = 'Page 1';
+    document.getElementById('mvPageLbl').textContent = 'Page 1';
     doLoad();
   };
 
   window.mvPage = function (dir) {
     if (dir === -1 && mvCurPage <= 1) return;
     mvCurPage += dir;
-    elPageLbl.textContent = 'Page ' + mvCurPage;
+    document.getElementById('mvPageLbl').textContent = 'Page ' + mvCurPage;
     doLoad();
   };
+
+  window.mvDoLoad = doLoad;
 
   /* ── init ── */
   function init() {
@@ -461,17 +464,8 @@ function applyPreset(a,b,c){
       mvDebounce = setTimeout(doLoad, 400);
     });
 
-    /* hook tab switching */
-    var _orig = window.switchTab;
-    window.switchTab = function (name) {
-      _orig(name);
-      if (name === 'movies' && elGrid && elGrid.children.length === 0) doLoad();
-    };
-    document.querySelectorAll('.tab[data-tab]').forEach(function (t) {
-      t.addEventListener('click', function () {
-        if (t.dataset.tab === 'movies' && elGrid && elGrid.children.length === 0) doLoad();
-      });
-    });
+    mvMoviesReady = true;
+    doLoad();
   }
 
   if (document.readyState === 'loading') {
