@@ -62,15 +62,6 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
 .mmeta{font-size:.63rem;color:rgba(200,210,255,.5);font-weight:300;}
 .mbadge{display:inline-block;margin-top:6px;padding:2px 8px;border-radius:20px;font-size:.6rem;font-weight:500;letter-spacing:.04em;background:linear-gradient(175deg,rgba(255,255,255,.1),rgba(0,0,30,.4));border-top:1px solid rgba(255,255,255,.15);border-bottom:1px solid rgba(0,0,0,.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);color:#e8ecff;}
 
-/* --- iframe overlay for games/movies --- */
-.iframe-overlay{position:fixed;inset:0;z-index:100;background:rgba(5,6,20,.96);display:none;flex-direction:column;}
-.iframe-overlay.open{display:flex;}
-.iframe-bar{display:flex;align-items:center;gap:12px;padding:10px 18px;background:rgba(18,22,50,.9);border-bottom:1px solid rgba(255,255,255,.08);}
-.iframe-title{font-size:.8rem;font-weight:500;color:#e8ecff;flex:1;}
-.iframe-close{padding:5px 14px;border-radius:20px;font-size:.72rem;font-weight:500;cursor:pointer;color:rgba(200,210,255,.7);background:rgba(0,0,20,.6);border-top:1px solid rgba(0,0,0,.4);border-bottom:1px solid rgba(255,255,255,.07);box-shadow:inset 0 2px 6px rgba(0,0,20,.5);transition:.2s;}
-.iframe-close:hover{color:#fff;}
-.iframe-frame{flex:1;border:none;width:100%;}
-
 /* --- Settings BG editor --- */
 .bg-panel{margin-top:20px;padding:20px 22px;border-radius:18px;background:rgba(0,0,20,.45);border-top:1.5px solid rgba(0,0,0,.5);border-bottom:1px solid rgba(255,255,255,.08);border-left:1px solid rgba(0,0,0,.25);border-right:1px solid rgba(255,255,255,.04);box-shadow:inset 0 3px 12px rgba(0,0,25,.55);}
 .bg-title{font-size:.68rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:rgba(200,210,255,.55);margin-bottom:14px;}
@@ -97,18 +88,6 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
 <div class="shoot"></div>
 <div class="moon"></div>
 
-<!-- =====================================================================
-     IFRAME OVERLAY — opens when a game or movie card is clicked.
-     Do not edit this directly; it is controlled by openFrame().
-===================================================================== -->
-<div class="iframe-overlay" id="overlay">
-  <div class="iframe-bar">
-    <span class="iframe-title" id="overlay-title"></span>
-    <span class="iframe-close" onclick="closeFrame()">✕ Close</span>
-  </div>
-  <iframe class="iframe-frame" id="overlay-frame" allowfullscreen></iframe>
-</div>
-
 <div class="page">
 <div class="panel">
 
@@ -128,29 +107,23 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
     <input class="search" id="searchBox" placeholder="Search the cosmos…">
   </div>
 
-  <!-- ================================================================
-       TABS — to add a new tab:
-         1. Add a <div class="tab" data-tab="MYPAGE">Label</div> here
-         2. Add a <div class="pview" id="MYPAGE-page"> block below
-  ================================================================ -->
   <div class="tabs">
     <div class="tab active" data-tab="home">Home</div>
     <div class="tab" data-tab="games">Games</div>
+    <div class="tab" data-tab="movies">Movies</div>
     <div class="tab" data-tab="apps">Apps</div>
     <div class="tab" data-tab="settings">Settings</div>
   </div>
 
-
-  <!-- ================================================================
-       HOME PAGE — shortcut cards that jump to other tabs.
-       Edit icon/label or change onclick="switchTab('NAME')" to match
-       the tab data-tab value you want.
-  ================================================================ -->
   <div class="pview active" id="home-page">
     <div class="grid">
       <a class="card" href="#" onclick="switchTab('games');return false;">
         <span class="card-icon">🎮</span>
         <span class="card-lbl">Games</span>
+      </a>
+      <a class="card" href="#" onclick="switchTab('movies');return false;">
+        <span class="card-icon">🎬</span>
+        <span class="card-lbl">Movies</span>
       </a>
       <a class="card" href="#" onclick="switchTab('apps');return false;">
         <span class="card-icon">🧩</span>
@@ -160,33 +133,12 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
         <span class="card-icon">⚙️</span>
         <span class="card-lbl">Settings</span>
       </a>
-      <!-- ── ADD MORE HOME SHORTCUTS HERE ──
-           Copy one <a class="card"> block above and change the icon,
-           label, and onclick tab name.
-      -->
     </div>
   </div>
 
-
-  <!-- ================================================================
-       GAMES PAGE
-       To add a game that opens in the overlay (iframe):
-         <div class="mcard" onclick="openFrame('Game Title','YOUR_URL_HERE')">
-
-       To add a game that opens in a new tab (for sites that block iframes):
-         <div class="mcard" onclick="window.open('YOUR_URL','_blank')">
-
-       Card structure:
-         .mthumb  — big emoji or image thumbnail
-         .mtitle  — game name
-         .mmeta   — short description / genre
-         .mbadge  — tag like "Free" or "Browser"
-  ================================================================ -->
   <div class="pview" id="games-page">
     <div class="media-grid">
-
-      <!-- GAME 1 -->
-      <div class="mcard" onclick="openFrame('2048','https://play2048.co/')">
+      <div class="mcard" onclick="window.open('https://play2048.co/','_blank')">
         <div class="mthumb">🔢</div>
         <div class="minfo">
           <div class="mtitle">2048</div>
@@ -194,9 +146,7 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
           <div class="mbadge">Free · Browser</div>
         </div>
       </div>
-
-      <!-- GAME 2 -->
-      <div class="mcard" onclick="openFrame('Slither.io','https://slither.io/')">
+      <div class="mcard" onclick="window.open('https://slither.io/','_blank')">
         <div class="mthumb">🐍</div>
         <div class="minfo">
           <div class="mtitle">Slither.io</div>
@@ -204,9 +154,7 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
           <div class="mbadge">Free · Browser</div>
         </div>
       </div>
-
-      <!-- GAME 3 -->
-      <div class="mcard" onclick="openFrame('Agar.io','https://agar.io/')">
+      <div class="mcard" onclick="window.open('https://agar.io/','_blank')">
         <div class="mthumb">🦠</div>
         <div class="minfo">
           <div class="mtitle">Agar.io</div>
@@ -214,9 +162,7 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
           <div class="mbadge">Free · Browser</div>
         </div>
       </div>
-
-      <!-- GAME 4 -->
-      <div class="mcard" onclick="openFrame('Wordle','https://www.nytimes.com/games/wordle/index.html')">
+      <div class="mcard" onclick="window.open('https://www.nytimes.com/games/wordle/index.html','_blank')">
         <div class="mthumb">🟩</div>
         <div class="minfo">
           <div class="mtitle">Wordle</div>
@@ -224,9 +170,7 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
           <div class="mbadge">Free · NYT</div>
         </div>
       </div>
-
-      <!-- GAME 5 -->
-      <div class="mcard" onclick="openFrame('Chess.com','https://www.chess.com/play/computer')">
+      <div class="mcard" onclick="window.open('https://www.chess.com/play/computer','_blank')">
         <div class="mthumb">♟️</div>
         <div class="minfo">
           <div class="mtitle">Chess</div>
@@ -234,9 +178,7 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
           <div class="mbadge">Free · Chess.com</div>
         </div>
       </div>
-
-      <!-- GAME 6 -->
-      <div class="mcard" onclick="openFrame('GeoGuessr','https://www.geoguessr.com/')">
+      <div class="mcard" onclick="window.open('https://www.geoguessr.com/','_blank')">
         <div class="mthumb">🌍</div>
         <div class="minfo">
           <div class="mtitle">GeoGuessr</div>
@@ -244,29 +186,31 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
           <div class="mbadge">Free tier</div>
         </div>
       </div>
-
-      <!-- ── ADD MORE GAMES HERE ──
-           Copy any mcard block above. Change the emoji, title, meta,
-           badge, and URL. Use openFrame() for iframe or window.open()
-           for sites that don't allow embedding.
-
-      <div class="mcard" onclick="openFrame('My Game','https://example.com/game')">
-        <div class="mthumb">🎯</div>
-        <div class="minfo">
-          <div class="mtitle">My Game</div>
-          <div class="mmeta">Genre · Description</div>
-          <div class="mbadge">Tag</div>
-        </div>
-      </div>
-      -->
-
     </div>
   </div>
 
-  <!-- APPS PAGE -->
+  <div class="pview" id="movies-page">
+    <div class="search-wrap" style="margin-bottom:12px;">
+      <svg class="search-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input class="search" id="mvSearchInput" placeholder="Search movies &amp; shows…" style="font-size:.82rem;padding:11px 18px 11px 46px;" autocomplete="off">
+    </div>
+    <div class="tabs" style="margin-bottom:12px;">
+      <div class="tab active" id="mvTabMovies" onclick="mvSwitchTab('movie')">Movies</div>
+      <div class="tab" id="mvTabTV" onclick="mvSwitchTab('tv')">TV &amp; Shows</div>
+    </div>
+    <div id="mvStatus" style="font-size:.7rem;color:rgba(200,210,255,.5);min-height:18px;margin-bottom:8px;word-break:break-all;"></div>
+    <div style="max-height:520px;overflow-y:auto;overflow-x:hidden;border-radius:12px;padding-right:4px;">
+    <div id="mvGrid" style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;"></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap;">
+      <button class="tab" onclick="mvPage(-1)" style="padding:5px 14px;font-size:.7rem;">← Prev</button>
+      <span id="mvPageLbl" style="font-size:.7rem;color:rgba(200,210,255,.45);">Page 1</span>
+      <button class="tab" onclick="mvPage(1)" style="padding:5px 14px;font-size:.7rem;">Next →</button>
+    </div>
+  </div>
+
   <div class="pview" id="apps-page">
     <div class="grid">
-
       <a class="card" href="https://youtube.com" target="_blank">
         <span class="card-icon">▶️</span><span class="card-lbl">YouTube</span>
       </a>
@@ -291,25 +235,9 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
       <a class="card" href="https://figma.com" target="_blank">
         <span class="card-icon">🎨</span><span class="card-lbl">Figma</span>
       </a>
-
-      <!-- ── ADD MORE APPS HERE ──
-           Copy any card block above and change icon, label, and href.
-
-      <a class="card" href="https://example.com" target="_blank">
-        <span class="card-icon">🔗</span>
-        <span class="card-lbl">My App</span>
-      </a>
-      -->
-
     </div>
   </div>
 
-
-  <!-- ================================================================
-       SETTINGS PAGE — background color editor.
-       Presets: call applyPreset('#hex1','#hex2','#hex3') with your
-       three gradient stop colors.
-  ================================================================ -->
   <div class="pview" id="settings-page">
     <div class="bg-panel">
       <div class="bg-title">Background Colors</div>
@@ -335,9 +263,6 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
       </div>
       <div class="bg-title" style="margin-bottom:10px">Presets</div>
       <div class="presets-row">
-        <!-- ── ADD OR EDIT PRESETS HERE ──
-             applyPreset('darkest','mid','lightest')
-        -->
         <button class="preset" onclick="applyPreset('#090b1a','#121c3d','#1f1745')">Deep Space</button>
         <button class="preset" onclick="applyPreset('#0a1a0d','#0d2e18','#0f3320')">Aurora</button>
         <button class="preset" onclick="applyPreset('#1a0a0a','#2e0d0d','#3a1010')">Red Dwarf</button>
@@ -349,10 +274,6 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
     <div style="margin-top:14px;font-size:.67rem;color:rgba(200,210,255,.35);text-align:center;">More settings coming soon</div>
   </div>
 
-
-  <!-- ================================================================
-       FOOTER — edit the left text or right emoji/status freely.
-  ================================================================ -->
   <div class="footer">
     <span>Saratoga Springs, NY</span>
     <span>🌙 Waxing crescent · Clear skies</span>
@@ -394,18 +315,6 @@ function switchTab(name){
 }
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.tab)));
 
-/* iframe overlay */
-function openFrame(title,url){
-  document.getElementById('overlay-title').textContent=title;
-  document.getElementById('overlay-frame').src=url;
-  document.getElementById('overlay').classList.add('open');
-}
-function closeFrame(){
-  document.getElementById('overlay').classList.remove('open');
-  document.getElementById('overlay-frame').src='';
-}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeFrame();});
-
 /* Background editor */
 function updateBg(){
   const a=document.getElementById('c1').value,
@@ -422,6 +331,155 @@ function applyPreset(a,b,c){
   document.getElementById('c3').value=c;
   updateBg();
 }
+
+/* MOONLIGHT MOVIES — TMDB v3 */
+(function () {
+  var API_KEY  = 'ee533ebaec5bb9f6bb448a66c1d4ad08';
+  var BASE     = 'https://api.themoviedb.org/3';
+  var IMG      = 'https://image.tmdb.org/t/p/w342';
+
+  var mvType = 'movie', mvCurPage = 1, mvQuery = '', mvDebounce = null;
+  var elStatus, elGrid, elPageLbl, elSearch;
+
+  function tmdbGet(path, cb) {
+    var sep = path.indexOf('?') === -1 ? '?' : '&';
+    var url = BASE + path + sep + 'api_key=' + API_KEY;
+    setStatus('Fetching from TMDB…');
+    fetch(url, { method:'GET', headers:{ Accept:'application/json' }, mode:'cors' })
+      .then(function (r) {
+        if (!r.ok) throw new Error('TMDB ' + r.status);
+        return r.json();
+      })
+      .then(cb)
+      .catch(function (err) {
+        var msg = 'Error: ' + err.message;
+        if (err.message === 'Failed to fetch' || /network|cors/i.test(err.message)) {
+          msg += ' — Open via HTTP, not file://  (python3 -m http.server 8080)';
+        }
+        setStatus(msg);
+      });
+  }
+
+  function setStatus(t) { if (elStatus) elStatus.textContent = t; }
+
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function renderGrid(items) {
+    elGrid.innerHTML = '';
+    elGrid.style.pointerEvents = 'auto';
+    if (!items || !items.length) { setStatus('Nothing found.'); return; }
+    items.forEach(function (item) {
+      var title  = item.title || item.name || 'Untitled';
+      var date   = item.release_date || item.first_air_date || '';
+      var year   = date ? new Date(date).getFullYear() : '';
+      var rating = item.vote_average ? '★ ' + item.vote_average.toFixed(1) : '';
+      var poster = item.poster_path ? IMG + item.poster_path : '';
+
+      var card = document.createElement('div');
+      card.className = 'mcard';
+      card.style.cursor = 'pointer';
+
+      var thumb = document.createElement('div');
+      thumb.className = 'mthumb';
+      thumb.style.cssText = 'padding:0;height:90px;overflow:hidden;background:rgba(0,0,30,.7);position:relative;';
+
+      if (poster) {
+        var img = document.createElement('img');
+        img.src = poster;
+        img.alt = esc(title);
+        img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
+        img.onerror = function () {
+          thumb.innerHTML = '<span style="font-size:2rem;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">&#127916;</span>';
+        };
+        thumb.appendChild(img);
+      } else {
+        thumb.innerHTML = '<span style="font-size:2rem;">&#127916;</span>';
+      }
+
+      if (rating) {
+        var badge = document.createElement('span');
+        badge.textContent = rating;
+        badge.style.cssText = 'position:absolute;bottom:5px;right:6px;font-size:.6rem;background:rgba(0,0,20,.8);padding:2px 6px;border-radius:8px;color:#e8ecff;';
+        thumb.appendChild(badge);
+      }
+
+      var info = document.createElement('div');
+      info.className = 'minfo';
+      info.innerHTML = '<div class="mtitle" style="font-size:.75rem;line-height:1.3;">' + esc(title) + '</div>'
+        + '<div class="mmeta">' + (year ? year + ' · ' : '') + (mvType === 'movie' ? 'Movie' : 'TV') + '</div>';
+
+      card.appendChild(thumb);
+      card.appendChild(info);
+      elGrid.appendChild(card);
+    });
+    setStatus(items.length + ' results · page ' + mvCurPage);
+  }
+
+  function doLoad() {
+    setStatus('Loading…');
+    elGrid.innerHTML = '';
+    elGrid.style.pointerEvents = 'none';
+    var path;
+    if (mvQuery.trim()) {
+      path = '/search/' + mvType + '?query=' + encodeURIComponent(mvQuery) + '&page=' + mvCurPage + '&include_adult=false';
+    } else {
+      path = '/' + mvType + '/popular?page=' + mvCurPage;
+    }
+    tmdbGet(path, function (data) {
+      renderGrid(data.results || []);
+    });
+  }
+
+  window.mvSwitchTab = function (type) {
+    mvType = type; mvCurPage = 1; mvQuery = '';
+    elSearch.value = '';
+    document.getElementById('mvTabMovies').classList.toggle('active', type === 'movie');
+    document.getElementById('mvTabTV').classList.toggle('active', type === 'tv');
+    elPageLbl.textContent = 'Page 1';
+    doLoad();
+  };
+
+  window.mvPage = function (dir) {
+    if (dir === -1 && mvCurPage <= 1) return;
+    mvCurPage += dir;
+    elPageLbl.textContent = 'Page ' + mvCurPage;
+    doLoad();
+  };
+
+  /* ── init ── */
+  function init() {
+    elStatus    = document.getElementById('mvStatus');
+    elGrid      = document.getElementById('mvGrid');
+    elPageLbl   = document.getElementById('mvPageLbl');
+    elSearch    = document.getElementById('mvSearchInput');
+
+    elSearch.addEventListener('input', function () {
+      mvQuery = this.value; mvCurPage = 1;
+      clearTimeout(mvDebounce);
+      mvDebounce = setTimeout(doLoad, 400);
+    });
+
+    /* hook tab switching */
+    var _orig = window.switchTab;
+    window.switchTab = function (name) {
+      _orig(name);
+      if (name === 'movies' && elGrid && elGrid.children.length === 0) doLoad();
+    };
+    document.querySelectorAll('.tab[data-tab]').forEach(function (t) {
+      t.addEventListener('click', function () {
+        if (t.dataset.tab === 'movies' && elGrid && elGrid.children.length === 0) doLoad();
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
 </script>
 </body>
 </html>
