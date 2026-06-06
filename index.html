@@ -95,6 +95,29 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
 .preset:hover{color:#e8ecff;}
 .preset:active{transform:scale(.97);}
 .footer{display:flex;justify-content:space-between;align-items:center;margin-top:18px;opacity:.4;font-size:.68rem;font-weight:300;letter-spacing:.03em;}
+/* ── Toggle switch ── */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.toggle-info{flex:1;min-width:0;}
+.toggle-info strong{display:block;font-size:.75rem;font-weight:500;color:#e8ecff;margin-bottom:2px;}
+.toggle-info span{font-size:.65rem;color:rgba(200,210,255,.45);font-weight:300;line-height:1.4;}
+.toggle{position:relative;width:44px;height:24px;flex-shrink:0;}
+.toggle input{opacity:0;width:0;height:0;position:absolute;}
+.toggle-track{position:absolute;inset:0;border-radius:24px;background:rgba(0,0,20,.6);border-top:1px solid rgba(0,0,0,.4);border-bottom:1px solid rgba(255,255,255,.06);cursor:pointer;transition:.25s;}
+.toggle input:checked+.toggle-track{background:linear-gradient(175deg,rgba(120,90,220,.7),rgba(60,40,140,.9));border-top-color:rgba(180,150,255,.3);}
+.toggle-track::after{content:'';position:absolute;width:18px;height:18px;border-radius:50%;background:linear-gradient(160deg,#d0d8ff,#9090c0);top:3px;left:3px;transition:.25s;box-shadow:0 2px 6px rgba(0,0,20,.5);}
+.toggle input:checked+.toggle-track::after{transform:translateX(20px);background:linear-gradient(160deg,#fff,#c8b8ff);}
+
+/* ── Sunlit OS inline viewer ── */
+.sunlit-shell{position:fixed;inset:0;z-index:200;display:none;flex-direction:column;background:#000;}
+.sunlit-shell.active{display:flex;}
+.sunlit-bar{display:flex;align-items:center;gap:10px;padding:8px 14px;background:rgba(10,12,30,.95);border-bottom:1px solid rgba(255,255,255,.08);flex-shrink:0;}
+.sunlit-back{padding:6px 16px;border-radius:50px;border:0;font-size:.7rem;font-weight:500;font-family:'Poppins',sans-serif;color:#e8ecff;background:linear-gradient(175deg,rgba(255,255,255,.12),rgba(0,0,20,.6));border-top:1.5px solid rgba(255,255,255,.18);border-bottom:1px solid rgba(0,0,0,.45);cursor:pointer;transition:.15s;display:flex;align-items:center;gap:6px;}
+.sunlit-back:hover{color:#fff;box-shadow:0 6px 18px rgba(0,0,20,.5),0 0 12px rgba(140,100,255,.2);}
+.sunlit-newtab{padding:6px 16px;border-radius:50px;border:0;font-size:.7rem;font-weight:500;font-family:'Poppins',sans-serif;color:rgba(200,210,255,.65);background:rgba(0,0,20,.4);border-top:1px solid rgba(255,255,255,.1);border-bottom:1px solid rgba(0,0,0,.3);cursor:pointer;transition:.15s;display:flex;align-items:center;gap:6px;}
+.sunlit-newtab:hover{color:#e8ecff;}
+.sunlit-label{font-size:.72rem;font-weight:500;color:rgba(200,210,255,.4);margin-left:4px;letter-spacing:.04em;}
+.sunlit-frame{flex:1;border:none;width:100%;display:block;}
+
 @media(max-width:720px){body{overflow:auto;padding:22px 0;align-items:flex-start;}.yt-toolbar,.yt-id-row{grid-template-columns:1fr;}.yt-results{grid-template-columns:repeat(2,1fr);}.yt-player iframe{height:260px;}}
 @media(max-width:520px){.grid{grid-template-columns:repeat(2,1fr);}.media-grid{grid-template-columns:repeat(2,1fr);}.panel{padding:28px 20px 24px;}.logo{font-size:2.8rem;}.yt-results{grid-template-columns:1fr;}.yt-card img{height:160px;}.footer{flex-direction:column;gap:4px;}}
 </style>
@@ -108,11 +131,22 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
 <div class="shoot"></div>
 <div class="moon"></div>
 
+<!-- Movie player overlay -->
 <div class="player-overlay" id="playerOverlay">
   <div class="player-container">
-    <button class="player-close" onclick="closePlayer()">x</button>
+    <button class="player-close" onclick="closePlayer()">&#x2715;</button>
     <iframe class="player-iframe" id="playerIframe"></iframe>
   </div>
+</div>
+
+<!-- Sunlit OS inline shell -->
+<div class="sunlit-shell" id="sunlitShell">
+  <div class="sunlit-bar">
+    <button class="sunlit-back" onclick="closeSunlitOS()">&#8592; Back</button>
+    <button class="sunlit-newtab" onclick="sunlitOpenNewTab()">&#x2197; Open in New Tab</button>
+    <span class="sunlit-label">🌤️ Sunlit OS</span>
+  </div>
+  <iframe class="sunlit-frame" id="sunlitFrame"></iframe>
 </div>
 
 <div class="page">
@@ -147,6 +181,9 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
       <a class="card" href="#" onclick="switchTab('apps');return false;"><span class="card-icon">🧩</span><span class="card-lbl">Apps</span></a>
       <a class="card" href="#" onclick="switchTab('settings');return false;"><span class="card-icon">⚙️</span><span class="card-lbl">Settings</span></a>
     </div>
+    <div style="margin-top:18px;display:flex;justify-content:center;">
+      <button class="yt-btn" onclick="openMoonlightNewTab()" style="display:flex;align-items:center;gap:7px;padding:9px 22px;">&#x2197; Open in New Tab</button>
+    </div>
   </div>
 
   <div class="pview" id="games-page">
@@ -165,12 +202,12 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
     <div class="tabs" style="margin-bottom:12px;"><div class="tab active" id="mvTabMovies" onclick="mvSwitchTab('movie')">Movies</div><div class="tab" id="mvTabTV" onclick="mvSwitchTab('tv')">TV &amp; Shows</div></div>
     <div id="mvStatus" style="font-size:.7rem;color:rgba(200,210,255,.5);min-height:18px;margin-bottom:8px;word-break:break-all;"></div>
     <div style="max-height:520px;overflow-y:auto;overflow-x:hidden;border-radius:12px;padding-right:4px;"><div id="mvGrid" style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;"></div></div>
-    <div style="display:flex;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap;"><button class="tab" onclick="mvPage(-1)" style="padding:5px 14px;font-size:.7rem;">← Prev</button><span id="mvPageLbl" style="font-size:.7rem;color:rgba(200,210,255,.45);">Page 1</span><button class="tab" onclick="mvPage(1)" style="padding:5px 14px;font-size:.7rem;">Next →</button></div>
+    <div style="display:flex;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap;"><button class="tab" onclick="mvPage(-1)" style="padding:5px 14px;font-size:.7rem;">&#8592; Prev</button><span id="mvPageLbl" style="font-size:.7rem;color:rgba(200,210,255,.45);">Page 1</span><button class="tab" onclick="mvPage(1)" style="padding:5px 14px;font-size:.7rem;">Next &#8594;</button></div>
   </div>
 
   <div class="pview" id="apps-page">
     <div class="grid">
-      <a class="card" href="#" onclick="switchTab('youtube');return false;"><span class="card-icon">▶️</span><span class="card-lbl">YouTube</span><span class="card-sub">Search & play</span></a>
+      <a class="card" href="#" onclick="switchTab('youtube');return false;"><span class="card-icon">▶️</span><span class="card-lbl">YouTube</span><span class="card-sub">Search &amp; play</span></a>
       <a class="card" href="#" onclick="openSunlitOS();return false;"><span class="card-icon">🌤️</span><span class="card-lbl">Sunlit OS</span><span class="card-sub">Desktop environment</span></a>
       <a class="card" href="https://spotify.com" target="_blank"><span class="card-icon">🎵</span><span class="card-lbl">Spotify</span></a>
       <a class="card" href="https://discord.com" target="_blank"><span class="card-icon">💬</span><span class="card-lbl">Discord</span></a>
@@ -183,7 +220,7 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
   </div>
 
   <div class="pview" id="youtube-page">
-    <div class="yt-id-row"><input class="search" id="ytIdInput" placeholder="Video ID or YouTube URL" onkeydown="if(event.key==='Enter')ytPlayById()"><button class="yt-btn" onclick="ytPlayById()">▶ Play</button></div>
+    <div class="yt-id-row"><input class="search" id="ytIdInput" placeholder="Video ID or YouTube URL" onkeydown="if(event.key==='Enter')ytPlayById()"><button class="yt-btn" onclick="ytPlayById()">&#9654; Play</button></div>
     <div class="yt-toolbar"><div class="search-wrap" style="margin-bottom:0;"><svg class="search-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input class="search" id="ytSearchInput" placeholder="Search YouTube..." style="font-size:.82rem;padding:11px 18px 11px 46px;" onkeydown="if(event.key==='Enter')ytSearchVideos()"></div><button class="yt-btn" onclick="ytSearchVideos()">Search</button></div>
     <div id="ytPlayer" class="yt-player"></div>
     <div id="ytStatus" class="yt-status"></div>
@@ -202,6 +239,19 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
       <div class="presets-row"><button class="preset" onclick="applyPreset('#090b1a','#121c3d','#1f1745')">Deep Space</button><button class="preset" onclick="applyPreset('#0a1a0d','#0d2e18','#0f3320')">Aurora</button><button class="preset" onclick="applyPreset('#1a0a0a','#2e0d0d','#3a1010')">Red Dwarf</button><button class="preset" onclick="applyPreset('#0a0a1f','#10103a','#1a1060')">Nebula</button><button class="preset" onclick="applyPreset('#101010','#1a1a1a','#222222')">Void</button><button class="preset" onclick="applyPreset('#001a2e','#003355','#004477')">Ocean</button></div>
     </div>
     <div class="bg-panel">
+      <div class="bg-title">Privacy</div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <strong>Auto-Hide Mode</strong>
+          <span>On first load, Moonlight opens in a clean about:blank tab and this tab disappears from history.</span>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="autoHideToggle" onchange="setAutoHide(this.checked)">
+          <div class="toggle-track"></div>
+        </label>
+      </div>
+    </div>
+    <div class="bg-panel">
       <div class="bg-title">Hub</div>
       <button class="yt-btn" onclick="openHubInNewTab()">Open Hub In New Tab</button>
     </div>
@@ -215,10 +265,52 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
 
 <script>
 // ── CONFIG ────────────────────────────────────────────────────────────────────
-// Update SUNLIT_OS_URL to your raw GitHub URL once you know the repo path.
-// Example: 'https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/sunlit_os.html'
+// Update SUNLIT_OS_URL to your raw GitHub URL, e.g.:
+// 'https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/sunlit_os.html'
 const SUNLIT_OS_URL = 'sunlit_os.html';
 // ─────────────────────────────────────────────────────────────────────────────
+
+// ── Auto-Hide Mode ────────────────────────────────────────────────────────────
+// Default ON. Reads from localStorage key 'ml_autohide'.
+// On first load (no 'ml_loaded' flag in sessionStorage), if enabled, clone this
+// page into a new about:blank tab and redirect this tab away from history.
+(function(){
+  var enabled = localStorage.getItem('ml_autohide');
+  // default to 'on' if never set
+  if(enabled === null){ localStorage.setItem('ml_autohide','1'); enabled='1'; }
+  var alreadyHidden = sessionStorage.getItem('ml_loaded');
+  if(enabled==='1' && !alreadyHidden){
+    // mark the new tab so it doesn't auto-hide again
+    var html = document.documentElement.outerHTML.replace(
+      "sessionStorage.getItem('ml_loaded')",
+      "'1'||sessionStorage.getItem('ml_loaded')" // always truthy in cloned tab
+    );
+    var t = window.open('about:blank','_blank');
+    if(t){
+      t.document.open();
+      t.document.write(html);
+      t.document.close();
+      // new tab sets its own session flag
+      try{ t.sessionStorage.setItem('ml_loaded','1'); }catch(e){}
+    }
+    location.replace('https://www.google.com');
+    return;
+  }
+  // mark this session so back-navigation doesn't re-trigger
+  sessionStorage.setItem('ml_loaded','1');
+  // sync toggle UI once DOM ready
+  document.addEventListener('DOMContentLoaded',function(){
+    var el=document.getElementById('autoHideToggle');
+    if(el) el.checked=(localStorage.getItem('ml_autohide')==='1');
+  });
+})();
+
+function setAutoHide(on){
+  localStorage.setItem('ml_autohide', on?'1':'0');
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
+var _sunlitHTML = null; // cached fetched HTML
 
 function tick(){const n=new Date();document.getElementById('clock').textContent=n.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});document.getElementById('datestr').textContent=n.toLocaleDateString([],{weekday:'long',month:'long',day:'numeric'});}
 setInterval(tick,1000);tick();
@@ -232,28 +324,68 @@ function playMovie(id,type){const url=`https://cinesrc.st/embed/${type==='movie'
 function closePlayer(){document.getElementById('playerIframe').src='';document.getElementById('playerOverlay').classList.remove('active');}
 document.getElementById('playerOverlay').addEventListener('click',function(e){if(e.target===this) closePlayer();});
 
+// ── Sunlit OS ─────────────────────────────────────────────────────────────────
 async function openSunlitOS(){
+  const shell=document.getElementById('sunlitShell');
+  const frame=document.getElementById('sunlitFrame');
+  shell.classList.add('active');
+  if(_sunlitHTML){
+    // already fetched — reuse
+    frame.srcdoc=_sunlitHTML;
+    return;
+  }
   try{
     const res=await fetch(SUNLIT_OS_URL);
     if(!res.ok) throw new Error('HTTP '+res.status);
-    const html=await res.text();
-    const newTab=window.open('about:blank','_blank');
-    if(newTab){newTab.document.open();newTab.document.write(html);newTab.document.close();}
+    _sunlitHTML=await res.text();
+    frame.srcdoc=_sunlitHTML;
   }catch(err){
-    // Fallback: try opening directly as a relative URL
+    // fallback to direct src if same-origin or if srcdoc fetch fails
+    frame.src=SUNLIT_OS_URL;
+  }
+}
+
+function closeSunlitOS(){
+  const shell=document.getElementById('sunlitShell');
+  shell.classList.remove('active');
+}
+
+function sunlitOpenNewTab(){
+  if(_sunlitHTML){
+    const t=window.open('about:blank','_blank');
+    if(t){t.document.open();t.document.write(_sunlitHTML);t.document.close();}
+  } else {
     window.open(SUNLIT_OS_URL,'_blank');
   }
 }
 
+// ── Open Moonlight in new tab, hide this tab from history ────────────────────
+function openMoonlightNewTab(){
+  const html=document.documentElement.outerHTML;
+  const t=window.open('about:blank','_blank');
+  if(t){t.document.open();t.document.write(html);t.document.close();}
+  location.replace('https://www.google.com');
+}
+
+// ── Hub button (settings) ─────────────────────────────────────────────────────
+function openHubInNewTab(){
+  const html=document.documentElement.outerHTML;
+  const t=window.open('about:blank','_blank');
+  if(t){t.document.open();t.document.write(html);t.document.close();}
+  location.replace('https://www.google.com');
+}
+
+// ── YouTube ───────────────────────────────────────────────────────────────────
 const YT_API_KEY='AIzaSyB7x5zyGdt3_9JnaIWqQYrvNkcB6lef_xA';
 function ytExtractVideoId(raw){let id=raw.trim();try{const url=new URL(id);if(url.hostname.includes('youtu.be')) id=url.pathname.split('/').filter(Boolean).pop()||id;else id=url.searchParams.get('v')||url.pathname.split('/').filter(Boolean).pop()||id;}catch(e){}return id;}
 function ytPlayById(){const raw=document.getElementById('ytIdInput').value.trim();if(!raw)return;ytPlayVideo(ytExtractVideoId(raw));}
 function ytPlayVideo(videoId){document.getElementById('ytPlayer').innerHTML=`<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;document.getElementById('ytStatus').textContent='Playing video';}
 function ytSetStatus(text){document.getElementById('ytStatus').textContent=text;}
 function ytEscape(text){return String(text).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-async function ytSearchVideos(){const query=document.getElementById('ytSearchInput').value.trim();if(!query)return;const resultsDiv=document.getElementById('ytResults');resultsDiv.innerHTML='';ytSetStatus('Loading...');try{const url=`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&type=video&q=${encodeURIComponent(query)}&key=${YT_API_KEY}`;const res=await fetch(url);const data=await res.json();resultsDiv.innerHTML='';if(!data.items||!data.items.length){ytSetStatus('No videos found.');return;}data.items.forEach(item=>{const vid=item.id.videoId,title=ytEscape(item.snippet.title),channel=ytEscape(item.snippet.channelTitle),thumb=item.snippet.thumbnails.medium.url;const card=document.createElement('div');card.className='yt-card';card.innerHTML=`<img src="${thumb}" alt="${title}" loading="lazy"><div class="yt-card-body"><h3>${title}</h3><p>${channel}</p><div class="yt-card-actions"><button onclick="ytPlayVideo('${vid}')">▶ Play Here</button><button onclick="window.open('https://www.youtube.com/watch?v=${vid}','_blank')">Open Video</button><button onclick="window.open('https://www.youtube.com/shorts/${vid}','_blank')">Open Short</button></div></div>`;resultsDiv.appendChild(card);});ytSetStatus(data.items.length+' results');}catch(err){ytSetStatus('Error loading videos.');}}
-function openHubInNewTab(){const pageHTML=document.documentElement.outerHTML;const newTab=window.open('about:blank','_blank');if(newTab){newTab.document.open();newTab.document.write(pageHTML);newTab.document.close();}location.replace('https://www.google.com');}
-(function(){var API_KEY='ee533ebaec5bb9f6bb448a66c1d4ad08',BASE='https://api.themoviedb.org/3',IMG='https://image.tmdb.org/t/p/w185';var mvType='movie',mvCurPage=1,mvQuery='',mvDebounce=null;var mvLoaded=false,mvCache={},mvAbort=null;var elStatus,elGrid,elPageLbl,elSearch;function tmdbGet(path,cb){if(mvCache[path]){cb(mvCache[path]);return;}if(mvAbort)mvAbort.abort();mvAbort=window.AbortController?new AbortController():null;var sep=path.indexOf('?')===-1?'?':'&';var url=BASE+path+sep+'api_key='+API_KEY;setStatus('Loading...');fetch(url,{method:'GET',headers:{Accept:'application/json'},mode:'cors',cache:'force-cache',signal:mvAbort?mvAbort.signal:undefined}).then(function(r){if(!r.ok)throw new Error('Unable to load movies');return r.json();}).then(function(data){mvCache[path]=data;cb(data);}).catch(function(err){if(err.name==='AbortError')return;setStatus('Error loading: '+err.message);});}function setStatus(t){if(elStatus)elStatus.textContent=t;}function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}function renderGrid(items){elGrid.innerHTML='';elGrid.style.pointerEvents='auto';if(!items||!items.length){setStatus('Nothing found.');return;}items.forEach(function(item){var title=item.title||item.name||'Untitled';var date=item.release_date||item.first_air_date||'';var year=date?new Date(date).getFullYear():'';var rating=item.vote_average?'★ '+item.vote_average.toFixed(1):'';var poster=item.poster_path?IMG+item.poster_path:'';var card=document.createElement('div');card.className='mcard';card.style.cursor='pointer';var thumb=document.createElement('div');thumb.className='mthumb';thumb.style.cssText='padding:0;height:90px;overflow:hidden;background:rgba(0,0,30,.7);position:relative;';if(poster){var img=document.createElement('img');img.src=poster;img.alt=title;img.loading='lazy';img.decoding='async';img.referrerPolicy='no-referrer';img.style.cssText='width:100%;height:100%;object-fit:cover;display:block;';img.onerror=function(){thumb.innerHTML='<span style="font-size:2rem;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">🎬</span>';};thumb.appendChild(img);}else{thumb.innerHTML='<span style="font-size:2rem;">🎬</span>';}if(rating){var badge=document.createElement('span');badge.textContent=rating;badge.style.cssText='position:absolute;bottom:5px;right:6px;font-size:.6rem;background:rgba(0,0,20,.8);padding:2px 6px;border-radius:8px;color:#e8ecff;';thumb.appendChild(badge);}var info=document.createElement('div');info.className='minfo';info.innerHTML='<div class="mtitle" style="font-size:.75rem;line-height:1.3;">'+esc(title)+'</div><div class="mmeta">'+(year?year+' · ':'')+(mvType==='movie'?'Movie':'TV')+'</div>';card.appendChild(thumb);card.appendChild(info);card.addEventListener('click',(function(id,type){return function(){playMovie(id,type);};})(item.id,mvType));elGrid.appendChild(card);});setStatus(items.length+' results · page '+mvCurPage);}function doLoad(){setStatus('Loading...');elGrid.innerHTML='';elGrid.style.pointerEvents='none';var path=mvQuery.trim()?'/search/'+mvType+'?query='+encodeURIComponent(mvQuery)+'&page='+mvCurPage+'&include_adult=false':'/'+mvType+'/popular?page='+mvCurPage;tmdbGet(path,function(data){renderGrid(data.results||[]);});}window.mvEnsureLoaded=function(){if(mvLoaded)return;mvLoaded=true;doLoad();};window.mvSwitchTab=function(type){mvType=type;mvCurPage=1;mvQuery='';elSearch.value='';document.getElementById('mvTabMovies').classList.toggle('active',type==='movie');document.getElementById('mvTabTV').classList.toggle('active',type==='tv');document.getElementById('mvPageLbl').textContent='Page 1';mvLoaded=true;doLoad();};window.mvPage=function(dir){if(dir===-1&&mvCurPage<=1)return;mvCurPage+=dir;document.getElementById('mvPageLbl').textContent='Page '+mvCurPage;mvLoaded=true;doLoad();};function init(){elStatus=document.getElementById('mvStatus');elGrid=document.getElementById('mvGrid');elPageLbl=document.getElementById('mvPageLbl');elSearch=document.getElementById('mvSearchInput');elSearch.addEventListener('input',function(){mvQuery=this.value;mvCurPage=1;mvLoaded=true;clearTimeout(mvDebounce);mvDebounce=setTimeout(doLoad,250);});setStatus('Open Movies to load fast.');}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();})();
+async function ytSearchVideos(){const query=document.getElementById('ytSearchInput').value.trim();if(!query)return;const resultsDiv=document.getElementById('ytResults');resultsDiv.innerHTML='';ytSetStatus('Loading...');try{const url=`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&type=video&q=${encodeURIComponent(query)}&key=${YT_API_KEY}`;const res=await fetch(url);const data=await res.json();resultsDiv.innerHTML='';if(!data.items||!data.items.length){ytSetStatus('No videos found.');return;}data.items.forEach(item=>{const vid=item.id.videoId,title=ytEscape(item.snippet.title),channel=ytEscape(item.snippet.channelTitle),thumb=item.snippet.thumbnails.medium.url;const card=document.createElement('div');card.className='yt-card';card.innerHTML=`<img src="${thumb}" alt="${title}" loading="lazy"><div class="yt-card-body"><h3>${title}</h3><p>${channel}</p><div class="yt-card-actions"><button onclick="ytPlayVideo('${vid}')">&#9654; Play Here</button><button onclick="window.open('https://www.youtube.com/watch?v=${vid}','_blank')">Open Video</button><button onclick="window.open('https://www.youtube.com/shorts/${vid}','_blank')">Open Short</button></div></div>`;resultsDiv.appendChild(card);});ytSetStatus(data.items.length+' results');}catch(err){ytSetStatus('Error loading videos.');}}
+
+// ── Movies (TMDB) ─────────────────────────────────────────────────────────────
+(function(){var API_KEY='ee533ebaec5bb9f6bb448a66c1d4ad08',BASE='https://api.themoviedb.org/3',IMG='https://image.tmdb.org/t/p/w185';var mvType='movie',mvCurPage=1,mvQuery='',mvDebounce=null;var mvLoaded=false,mvCache={},mvAbort=null;var elStatus,elGrid,elPageLbl,elSearch;function tmdbGet(path,cb){if(mvCache[path]){cb(mvCache[path]);return;}if(mvAbort)mvAbort.abort();mvAbort=window.AbortController?new AbortController():null;var sep=path.indexOf('?')===-1?'?':'&';var url=BASE+path+sep+'api_key='+API_KEY;setStatus('Loading...');fetch(url,{method:'GET',headers:{Accept:'application/json'},mode:'cors',cache:'force-cache',signal:mvAbort?mvAbort.signal:undefined}).then(function(r){if(!r.ok)throw new Error('Unable to load movies');return r.json();}).then(function(data){mvCache[path]=data;cb(data);}).catch(function(err){if(err.name==='AbortError')return;setStatus('Error loading: '+err.message);});}function setStatus(t){if(elStatus)elStatus.textContent=t;}function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}function renderGrid(items){elGrid.innerHTML='';elGrid.style.pointerEvents='auto';if(!items||!items.length){setStatus('Nothing found.');return;}items.forEach(function(item){var title=item.title||item.name||'Untitled';var date=item.release_date||item.first_air_date||'';var year=date?new Date(date).getFullYear():'';var rating=item.vote_average?'&#9733; '+item.vote_average.toFixed(1):'';var poster=item.poster_path?IMG+item.poster_path:'';var card=document.createElement('div');card.className='mcard';card.style.cursor='pointer';var thumb=document.createElement('div');thumb.className='mthumb';thumb.style.cssText='padding:0;height:90px;overflow:hidden;background:rgba(0,0,30,.7);position:relative;';if(poster){var img=document.createElement('img');img.src=poster;img.alt=title;img.loading='lazy';img.decoding='async';img.referrerPolicy='no-referrer';img.style.cssText='width:100%;height:100%;object-fit:cover;display:block;';img.onerror=function(){thumb.innerHTML='<span style="font-size:2rem;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">🎬</span>';};thumb.appendChild(img);}else{thumb.innerHTML='<span style="font-size:2rem;">🎬</span>';}if(rating){var badge=document.createElement('span');badge.innerHTML=rating;badge.style.cssText='position:absolute;bottom:5px;right:6px;font-size:.6rem;background:rgba(0,0,20,.8);padding:2px 6px;border-radius:8px;color:#e8ecff;';thumb.appendChild(badge);}var info=document.createElement('div');info.className='minfo';info.innerHTML='<div class="mtitle" style="font-size:.75rem;line-height:1.3;">'+esc(title)+'</div><div class="mmeta">'+(year?year+' · ':'')+(mvType==='movie'?'Movie':'TV')+'</div>';card.appendChild(thumb);card.appendChild(info);card.addEventListener('click',(function(id,type){return function(){playMovie(id,type);};})(item.id,mvType));elGrid.appendChild(card);});setStatus(items.length+' results · page '+mvCurPage);}function doLoad(){setStatus('Loading...');elGrid.innerHTML='';elGrid.style.pointerEvents='none';var path=mvQuery.trim()?'/search/'+mvType+'?query='+encodeURIComponent(mvQuery)+'&page='+mvCurPage+'&include_adult=false':'/'+mvType+'/popular?page='+mvCurPage;tmdbGet(path,function(data){renderGrid(data.results||[]);});}window.mvEnsureLoaded=function(){if(mvLoaded)return;mvLoaded=true;doLoad();};window.mvSwitchTab=function(type){mvType=type;mvCurPage=1;mvQuery='';elSearch.value='';document.getElementById('mvTabMovies').classList.toggle('active',type==='movie');document.getElementById('mvTabTV').classList.toggle('active',type==='tv');document.getElementById('mvPageLbl').textContent='Page 1';mvLoaded=true;doLoad();};window.mvPage=function(dir){if(dir===-1&&mvCurPage<=1)return;mvCurPage+=dir;document.getElementById('mvPageLbl').textContent='Page '+mvCurPage;mvLoaded=true;doLoad();};function init(){elStatus=document.getElementById('mvStatus');elGrid=document.getElementById('mvGrid');elPageLbl=document.getElementById('mvPageLbl');elSearch=document.getElementById('mvSearchInput');elSearch.addEventListener('input',function(){mvQuery=this.value;mvCurPage=1;mvLoaded=true;clearTimeout(mvDebounce);mvDebounce=setTimeout(doLoad,250);});setStatus('Open Movies to load fast.');}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();})();
 </script>
 </body>
 </html>
