@@ -62,6 +62,14 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
 .mmeta{font-size:.63rem;color:rgba(200,210,255,.5);font-weight:300;}
 .mbadge{display:inline-block;margin-top:6px;padding:2px 8px;border-radius:20px;font-size:.6rem;font-weight:500;letter-spacing:.04em;background:linear-gradient(175deg,rgba(255,255,255,.1),rgba(0,0,30,.4));border-top:1px solid rgba(255,255,255,.15);border-bottom:1px solid rgba(0,0,0,.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);color:#e8ecff;}
 
+/* --- Player Embed --- */
+.player-overlay{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:100;display:none;align-items:center;justify-content:center;padding:20px;}
+.player-overlay.active{display:flex;}
+.player-container{width:90vw;height:90vh;max-width:1200px;max-height:700px;background:#000;border-radius:12px;overflow:hidden;position:relative;box-shadow:0 0 40px rgba(0,0,0,.9);}
+.player-close{position:absolute;top:10px;right:10px;z-index:101;background:rgba(0,0,0,.7);border:none;color:#fff;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:24px;display:flex;align-items:center;justify-content:center;transition:.2s;}
+.player-close:hover{background:rgba(255,0,0,.8);}
+.player-iframe{width:100%;height:100%;border:none;}
+
 /* --- Settings BG editor --- */
 .bg-panel{margin-top:20px;padding:20px 22px;border-radius:18px;background:rgba(0,0,20,.45);border-top:1.5px solid rgba(0,0,0,.5);border-bottom:1px solid rgba(255,255,255,.08);border-left:1px solid rgba(0,0,0,.25);border-right:1px solid rgba(255,255,255,.04);box-shadow:inset 0 3px 12px rgba(0,0,25,.55);}
 .bg-title{font-size:.68rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:rgba(200,210,255,.55);margin-bottom:14px;}
@@ -87,6 +95,13 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
 <div class="stars" id="stars"></div>
 <div class="shoot"></div>
 <div class="moon"></div>
+
+<div class="player-overlay" id="playerOverlay">
+  <div class="player-container">
+    <button class="player-close" onclick="closePlayer()">✕</button>
+    <iframe class="player-iframe" id="playerIframe"></iframe>
+  </div>
+</div>
 
 <div class="page">
 <div class="panel">
@@ -332,6 +347,22 @@ function applyPreset(a,b,c){
   updateBg();
 }
 
+/* Player functions */
+function playMovie(id, type, title) {
+  const url = `https://cinesrc.st/${type === 'movie' ? 'movie' : 'series'}/${id}`;
+  document.getElementById('playerIframe').src = url;
+  document.getElementById('playerOverlay').classList.add('active');
+}
+
+function closePlayer() {
+  document.getElementById('playerIframe').src = '';
+  document.getElementById('playerOverlay').classList.remove('active');
+}
+
+document.getElementById('playerOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closePlayer();
+});
+
 /* MOONLIGHT MOVIES — Using CineSrc & TMDB */
 (function () {
   var API_KEY  = 'ee533ebaec5bb9f6bb448a66c1d4ad08';
@@ -360,11 +391,6 @@ function applyPreset(a,b,c){
 
   function esc(s) {
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  }
-
-  function openMovie(id, type, title) {
-    var cinesrcUrl = 'https://cinesrc.pro/' + (type === 'movie' ? 'movie' : 'series') + '/' + id;
-    window.open(cinesrcUrl, '_blank');
   }
 
   function renderGrid(items) {
@@ -413,9 +439,11 @@ function applyPreset(a,b,c){
 
       card.appendChild(thumb);
       card.appendChild(info);
-      card.addEventListener('click', function () {
-        openMovie(item.id, mvType, title);
-      });
+      card.addEventListener('click', (function(id, type, t) {
+        return function() {
+          playMovie(id, type, t);
+        };
+      })(item.id, mvType, title));
       elGrid.appendChild(card);
     });
     setStatus(items.length + ' results · page ' + mvCurPage);
