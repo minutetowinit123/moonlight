@@ -32,26 +32,22 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
 .subtitle{font-size:.78rem;color:rgba(200,210,255,.55);font-weight:300;letter-spacing:.05em;margin-bottom:24px;}
 .search-wrap{position:relative;margin-bottom:22px;}
 .search-ico{position:absolute;left:18px;top:50%;transform:translateY(-50%);opacity:.4;pointer-events:none;}
-.search{width:100%;padding:14px 20px 14px 50px;font-family:'Poppins',sans-serif;font-size:.9rem;font-weight:300;color:#e8ecff;background:rgba(0,0,20,.45);border-radius:50px;border-top:1.5px solid rgba(255,255,255,.15);border-bottom:1px solid rgba(0,0,0,.35);border-left:1px solid rgba(255,255,255,.08);border-right:1px solid rgba(0,0,0,.2);box-shadow:0 4px 16px rgba(0,0,20,.3),inset 0 1px 0 rgba(255,255,255,.05);transition:.2s;}
+.search{width:100%;padding:14px 20px 14px 50px;font-family:'Poppins',sans-serif;font-size:.9rem;font-weight:300;color:#e8ecff;background:rgba(0,0,20,.45);border-radius:50px;border-top:1.5px solid rgba(255,255,255,.15);border-bottom:1px solid rgba(0,0,0,.35);border-left:1px solid rgba(255,255,255,.08);border-right:1px solid rgba(0,0,0,.2);box-shadow:0 4px 16px rgba(0,0,20,.3),inset 0 1px 0 rgba(255,255,255,.05);transition:.2s;outline:none;}
 .search::placeholder{color:rgba(200,210,255,.45);}
 .search:focus{box-shadow:inset 0 3px 10px rgba(0,0,20,.6),0 0 0 2px rgba(157,124,255,.35),0 0 18px rgba(100,160,255,.2);border-top-color:rgba(157,124,255,.4);}
 .tabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap;}
-.tab{padding:7px 18px;border-radius:50px;font-size:.73rem;font-weight:500;cursor:pointer;color:rgba(200,210,255,.55);background:rgba(0,0,20,.45);border-top:1px solid rgba(0,0,0,.4);border-bottom:1px solid rgba(0,0,0,.3);transition:.15s;}
+.tab{padding:7px 18px;border-radius:50px;font-size:.73rem;font-weight:500;cursor:pointer;color:rgba(200,210,255,.55);background:rgba(0,0,20,.45);border-top:1px solid rgba(0,0,0,.4);border-bottom:1px solid rgba(0,0,0,.3);transition:.15s;border-left:1px solid rgba(255,255,255,.05);border-right:1px solid rgba(0,0,0,.2);font-family:'Poppins',sans-serif;}
 .tab:hover{color:#e8ecff;}
 .tab.active{color:#fff;background:linear-gradient(175deg,rgba(120,90,220,.55),rgba(60,40,140,.8));border-top:1.5px solid rgba(180,150,255,.35);border-bottom:1px solid rgba(0,0,0,.5);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);}
 .pview{display:none;animation:fadeUp .28s ease both;}
 .pview.active{display:block;}
-
-/* --- Generic card grid used by Home, Games, Apps --- */
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
-.card{padding:22px 14px 18px;border-radius:18px;background:linear-gradient(175deg,rgba(255,255,255,.09),rgba(0,0,30,.4));border-top:1.5px solid rgba(255,255,255,.18);border-bottom:1px solid rgba(0,0,0,.35);cursor:pointer;transition:.2s;border-left:1px solid rgba(255,255,255,.08);border-right:1px solid rgba(0,0,0,.2);}
+.card{padding:22px 14px 18px;border-radius:18px;background:linear-gradient(175deg,rgba(255,255,255,.09),rgba(0,0,30,.4));border-top:1.5px solid rgba(255,255,255,.18);border-bottom:1px solid rgba(0,0,0,.35);cursor:pointer;transition:.2s;border-left:1px solid rgba(255,255,255,.08);border-right:1px solid rgba(0,0,0,.2);text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:8px;}
 .card:hover{transform:translateY(-3px);background:linear-gradient(175deg,rgba(255,255,255,.14),rgba(0,0,30,.35));box-shadow:0 14px 32px rgba(0,0,20,.6),0 0 18px rgba(140,100,255,.2),inset 0 1px 0 rgba(255,255,255,.08);}
 .card:active{transform:translateY(0);box-shadow:0 4px 12px rgba(0,0,20,.5),inset 0 2px 6px rgba(0,0,20,.4);}
 .card-icon{font-size:1.5rem;line-height:1;}
 .card-lbl{font-size:.73rem;font-weight:500;letter-spacing:.05em;background:linear-gradient(90deg,#b89fff,#6ed8ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .card-sub{font-size:.6rem;color:rgba(200,210,255,.4);font-weight:300;margin-top:-4px;}
-
-/* --- Movie / Game media card --- */
 .media-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
 .mcard{border-radius:16px;overflow:hidden;cursor:pointer;background:linear-gradient(175deg,rgba(255,255,255,.08),rgba(0,0,30,.5));border-top:1.5px solid rgba(255,255,255,.16);border-bottom:1px solid rgba(0,0,0,.35);border-left:1px solid rgba(255,255,255,.08);border-right:1px solid rgba(0,0,0,.2);transition:.2s;}
 .mcard:hover{transform:translateY(-3px);box-shadow:0 16px 36px rgba(0,0,20,.65),0 0 20px rgba(140,100,255,.18);}
@@ -61,16 +57,30 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
 .mtitle{font-size:.78rem;font-weight:500;margin-bottom:2px;color:#e8ecff;}
 .mmeta{font-size:.63rem;color:rgba(200,210,255,.5);font-weight:300;}
 .mbadge{display:inline-block;margin-top:6px;padding:2px 8px;border-radius:20px;font-size:.6rem;font-weight:500;letter-spacing:.04em;background:linear-gradient(175deg,rgba(255,255,255,.1),rgba(0,0,20,.5));}
-
-/* --- Player Embed --- */
 .player-overlay{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:100;display:none;align-items:center;justify-content:center;padding:20px;}
 .player-overlay.active{display:flex;}
 .player-container{width:90vw;height:90vh;max-width:1200px;max-height:700px;background:#000;border-radius:12px;overflow:hidden;position:relative;box-shadow:0 0 40px rgba(0,0,0,.9);}
 .player-close{position:absolute;top:10px;right:10px;z-index:101;background:rgba(0,0,0,.7);border:none;color:#fff;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:24px;display:flex;align-items:center;justify-content:center;transition:.2s;}
 .player-close:hover{background:rgba(255,0,0,.8);}
 .player-iframe{width:100%;height:100%;border:none;}
-
-/* --- Settings BG editor --- */
+.yt-shell{max-height:540px;overflow-y:auto;overflow-x:hidden;padding-right:4px;}
+.yt-toolbar{display:grid;grid-template-columns:minmax(180px,1fr) auto;gap:10px;margin-bottom:12px;}
+.yt-id-row{display:grid;grid-template-columns:auto minmax(170px,1fr) auto;gap:8px;margin-bottom:18px;align-items:center;}
+.yt-btn{padding:10px 15px;border-radius:50px;border:0;font-size:.7rem;font-weight:500;letter-spacing:.03em;font-family:'Poppins',sans-serif;color:#e8ecff;background:linear-gradient(175deg,rgba(255,255,255,.1),rgba(0,0,20,.55));border-top:1.5px solid rgba(255,255,255,.16);border-bottom:1px solid rgba(0,0,0,.4);cursor:pointer;transition:.15s;white-space:nowrap;}
+.yt-btn:hover{color:#fff;box-shadow:0 10px 24px rgba(0,0,20,.45),0 0 16px rgba(140,100,255,.18);}
+.yt-player{width:100%;margin-bottom:16px;background:rgba(0,0,20,.45);border-radius:16px;overflow:hidden;border-top:1.5px solid rgba(255,255,255,.14);border-bottom:1px solid rgba(0,0,0,.4);}
+.yt-player:empty{display:none;}
+.yt-player iframe{display:block;width:100%;height:360px;border:0;}
+.yt-status{font-size:.7rem;color:rgba(200,210,255,.5);min-height:20px;margin-bottom:10px;}
+.yt-results{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.yt-card{border-radius:16px;overflow:hidden;background:linear-gradient(175deg,rgba(255,255,255,.08),rgba(0,0,30,.5));border-top:1.5px solid rgba(255,255,255,.16);border-bottom:1px solid rgba(0,0,0,.35);border-left:1px solid rgba(255,255,255,.08);border-right:1px solid rgba(0,0,0,.2);}
+.yt-card img{width:100%;height:118px;object-fit:cover;display:block;background:rgba(0,0,30,.7);}
+.yt-card-body{padding:10px 12px;}
+.yt-card-body h3{font-size:.72rem;font-weight:500;line-height:1.35;margin-bottom:4px;color:#e8ecff;}
+.yt-card-body p{font-size:.62rem;color:rgba(200,210,255,.48);margin-bottom:9px;font-weight:300;}
+.yt-card-actions{display:flex;gap:6px;flex-wrap:wrap;}
+.yt-card-actions button{padding:5px 9px;border-radius:20px;border:0;background:rgba(0,0,20,.45);border-top:1px solid rgba(255,255,255,.12);color:rgba(232,236,255,.85);font-size:.6rem;font-family:'Poppins',sans-serif;cursor:pointer;}
+.yt-card-actions button:hover{color:#fff;background:rgba(120,90,220,.35);}
 .bg-panel{margin-top:20px;padding:20px 22px;border-radius:18px;background:rgba(0,0,20,.45);border-top:1.5px solid rgba(0,0,0,.5);border-bottom:1px solid rgba(255,255,255,.08);border-left:1px solid rgba(255,255,255,.06);border-right:1px solid rgba(0,0,0,.2);}
 .bg-title{font-size:.68rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:rgba(200,210,255,.55);margin-bottom:14px;}
 .bg-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:16px;}
@@ -80,11 +90,12 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
 .cswatch input[type=color]{position:absolute;inset:-8px;width:calc(100% + 16px);height:calc(100% + 16px);opacity:0;cursor:pointer;border:none;}
 .cswatch:hover{transform:scale(1.1);}
 .presets-row{display:flex;gap:7px;flex-wrap:wrap;}
-.preset{padding:5px 12px;border-radius:20px;font-size:.65rem;font-weight:500;cursor:pointer;letter-spacing:.04em;color:rgba(200,210,255,.6);background:linear-gradient(175deg,rgba(255,255,255,.07),rgba(0,0,20,.5));border:1px solid rgba(255,255,255,.08);transition:.15s;}
+.preset{padding:5px 12px;border-radius:20px;font-size:.65rem;font-weight:500;cursor:pointer;letter-spacing:.04em;color:rgba(200,210,255,.6);background:linear-gradient(175deg,rgba(255,255,255,.07),rgba(0,0,20,.5));border:1px solid rgba(255,255,255,.08);transition:.15s;font-family:'Poppins',sans-serif;}
 .preset:hover{color:#e8ecff;}
 .preset:active{transform:scale(.97);}
 .footer{display:flex;justify-content:space-between;align-items:center;margin-top:18px;opacity:.4;font-size:.68rem;font-weight:300;letter-spacing:.03em;}
-@media(max-width:520px){.grid{grid-template-columns:repeat(2,1fr);}.media-grid{grid-template-columns:repeat(2,1fr);}.panel{padding:28px 20px 24px;}.logo{font-size:2.8rem;}}
+@media(max-width:720px){body{overflow:auto;padding:22px 0;align-items:flex-start;}.yt-toolbar,.yt-id-row{grid-template-columns:1fr;}.yt-results{grid-template-columns:repeat(2,1fr);}.yt-player iframe{height:260px;}}
+@media(max-width:520px){.grid{grid-template-columns:repeat(2,1fr);}.media-grid{grid-template-columns:repeat(2,1fr);}.panel{padding:28px 20px 24px;}.logo{font-size:2.8rem;}.yt-results{grid-template-columns:1fr;}.yt-card img{height:160px;}.footer{flex-direction:column;gap:4px;}}
 </style>
 </head>
 <body>
@@ -98,7 +109,7 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
 
 <div class="player-overlay" id="playerOverlay">
   <div class="player-container">
-    <button class="player-close" onclick="closePlayer()">✕</button>
+    <button class="player-close" onclick="closePlayer()">x</button>
     <iframe class="player-iframe" id="playerIframe"></iframe>
   </div>
 </div>
@@ -119,7 +130,7 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
     <svg class="search-ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
     </svg>
-    <input class="search" id="searchBox" placeholder="Search the cosmos…">
+    <input class="search" id="searchBox" placeholder="Search the cosmos...">
   </div>
 
   <div class="tabs">
@@ -127,6 +138,7 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
     <div class="tab" data-tab="games">Games</div>
     <div class="tab" data-tab="movies">Movies</div>
     <div class="tab" data-tab="apps">Apps</div>
+    <div class="tab" data-tab="youtube">YouTube</div>
     <div class="tab" data-tab="settings">Settings</div>
   </div>
 
@@ -144,70 +156,28 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
         <span class="card-icon">🧩</span>
         <span class="card-lbl">Apps</span>
       </a>
-      <a class="card" href="#" onclick="switchTab('settings');return false;">
-        <span class="card-icon">⚙️</span>
-        <span class="card-lbl">Settings</span>
+      <a class="card" href="#" onclick="switchTab('youtube');return false;">
+        <span class="card-icon">▶️</span>
+        <span class="card-lbl">YouTube</span>
       </a>
     </div>
   </div>
 
   <div class="pview" id="games-page">
     <div class="media-grid">
-      <div class="mcard" onclick="window.open('https://play2048.co/','_blank')">
-        <div class="mthumb">🔢</div>
-        <div class="minfo">
-          <div class="mtitle">2048</div>
-          <div class="mmeta">Puzzle · Slide tiles</div>
-          <div class="mbadge">Free · Browser</div>
-        </div>
-      </div>
-      <div class="mcard" onclick="window.open('https://slither.io/','_blank')">
-        <div class="mthumb">🐍</div>
-        <div class="minfo">
-          <div class="mtitle">Slither.io</div>
-          <div class="mmeta">Multiplayer · Snake</div>
-          <div class="mbadge">Free · Browser</div>
-        </div>
-      </div>
-      <div class="mcard" onclick="window.open('https://agar.io/','_blank')">
-        <div class="mthumb">🦠</div>
-        <div class="minfo">
-          <div class="mtitle">Agar.io</div>
-          <div class="mmeta">Multiplayer · Strategy</div>
-          <div class="mbadge">Free · Browser</div>
-        </div>
-      </div>
-      <div class="mcard" onclick="window.open('https://www.nytimes.com/games/wordle/index.html','_blank')">
-        <div class="mthumb">🟩</div>
-        <div class="minfo">
-          <div class="mtitle">Wordle</div>
-          <div class="mmeta">Word puzzle · Daily</div>
-          <div class="mbadge">Free · NYT</div>
-        </div>
-      </div>
-      <div class="mcard" onclick="window.open('https://www.chess.com/play/computer','_blank')">
-        <div class="mthumb">♟️</div>
-        <div class="minfo">
-          <div class="mtitle">Chess</div>
-          <div class="mmeta">Strategy · vs Computer</div>
-          <div class="mbadge">Free · Chess.com</div>
-        </div>
-      </div>
-      <div class="mcard" onclick="window.open('https://www.geoguessr.com/','_blank')">
-        <div class="mthumb">🌍</div>
-        <div class="minfo">
-          <div class="mtitle">GeoGuessr</div>
-          <div class="mmeta">Geography · Explore</div>
-          <div class="mbadge">Free tier</div>
-        </div>
-      </div>
+      <div class="mcard" onclick="window.open('https://play2048.co/','_blank')"><div class="mthumb">🔢</div><div class="minfo"><div class="mtitle">2048</div><div class="mmeta">Puzzle · Slide tiles</div><div class="mbadge">Free · Browser</div></div></div>
+      <div class="mcard" onclick="window.open('https://slither.io/','_blank')"><div class="mthumb">🐍</div><div class="minfo"><div class="mtitle">Slither.io</div><div class="mmeta">Multiplayer · Snake</div><div class="mbadge">Free · Browser</div></div></div>
+      <div class="mcard" onclick="window.open('https://agar.io/','_blank')"><div class="mthumb">🦠</div><div class="minfo"><div class="mtitle">Agar.io</div><div class="mmeta">Multiplayer · Strategy</div><div class="mbadge">Free · Browser</div></div></div>
+      <div class="mcard" onclick="window.open('https://www.nytimes.com/games/wordle/index.html','_blank')"><div class="mthumb">🟩</div><div class="minfo"><div class="mtitle">Wordle</div><div class="mmeta">Word puzzle · Daily</div><div class="mbadge">Free · NYT</div></div></div>
+      <div class="mcard" onclick="window.open('https://www.chess.com/play/computer','_blank')"><div class="mthumb">♟️</div><div class="minfo"><div class="mtitle">Chess</div><div class="mmeta">Strategy · vs Computer</div><div class="mbadge">Free · Chess.com</div></div></div>
+      <div class="mcard" onclick="window.open('https://www.geoguessr.com/','_blank')"><div class="mthumb">🌍</div><div class="minfo"><div class="mtitle">GeoGuessr</div><div class="mmeta">Geography · Explore</div><div class="mbadge">Free tier</div></div></div>
     </div>
   </div>
 
   <div class="pview" id="movies-page">
     <div class="search-wrap" style="margin-bottom:12px;">
       <svg class="search-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input class="search" id="mvSearchInput" placeholder="Search movies &amp; shows…" style="font-size:.82rem;padding:11px 18px 11px 46px;" autocomplete="off">
+      <input class="search" id="mvSearchInput" placeholder="Search movies &amp; shows..." style="font-size:.82rem;padding:11px 18px 11px 46px;" autocomplete="off">
     </div>
     <div class="tabs" style="margin-bottom:12px;">
       <div class="tab active" id="mvTabMovies" onclick="mvSwitchTab('movie')">Movies</div>
@@ -226,30 +196,36 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
 
   <div class="pview" id="apps-page">
     <div class="grid">
-      <a class="card" href="https://youtube.com" target="_blank">
-        <span class="card-icon">▶️</span><span class="card-lbl">YouTube</span>
+      <a class="card" href="#" onclick="switchTab('youtube');return false;">
+        <span class="card-icon">▶️</span><span class="card-lbl">YouTube</span><span class="card-sub">Search & play</span>
       </a>
-      <a class="card" href="https://spotify.com" target="_blank">
-        <span class="card-icon">🎵</span><span class="card-lbl">Spotify</span>
-      </a>
-      <a class="card" href="https://discord.com" target="_blank">
-        <span class="card-icon">💬</span><span class="card-lbl">Discord</span>
-      </a>
-      <a class="card" href="https://github.com" target="_blank">
-        <span class="card-icon">🐙</span><span class="card-lbl">GitHub</span>
-      </a>
-      <a class="card" href="https://twitter.com" target="_blank">
-        <span class="card-icon">🐦</span><span class="card-lbl">Twitter</span>
-      </a>
-      <a class="card" href="https://reddit.com" target="_blank">
-        <span class="card-icon">🤖</span><span class="card-lbl">Reddit</span>
-      </a>
-      <a class="card" href="https://notion.so" target="_blank">
-        <span class="card-icon">📝</span><span class="card-lbl">Notion</span>
-      </a>
-      <a class="card" href="https://figma.com" target="_blank">
-        <span class="card-icon">🎨</span><span class="card-lbl">Figma</span>
-      </a>
+      <a class="card" href="https://spotify.com" target="_blank"><span class="card-icon">🎵</span><span class="card-lbl">Spotify</span></a>
+      <a class="card" href="https://discord.com" target="_blank"><span class="card-icon">💬</span><span class="card-lbl">Discord</span></a>
+      <a class="card" href="https://github.com" target="_blank"><span class="card-icon">🐙</span><span class="card-lbl">GitHub</span></a>
+      <a class="card" href="https://twitter.com" target="_blank"><span class="card-icon">🐦</span><span class="card-lbl">Twitter</span></a>
+      <a class="card" href="https://reddit.com" target="_blank"><span class="card-icon">🤖</span><span class="card-lbl">Reddit</span></a>
+      <a class="card" href="https://notion.so" target="_blank"><span class="card-icon">📝</span><span class="card-lbl">Notion</span></a>
+      <a class="card" href="https://figma.com" target="_blank"><span class="card-icon">🎨</span><span class="card-lbl">Figma</span></a>
+    </div>
+  </div>
+
+  <div class="pview" id="youtube-page">
+    <div class="yt-id-row">
+      <button class="yt-btn" onclick="openHubInNewTab()">Open Hub In New Tab</button>
+      <input class="search" id="ytIdInput" placeholder="Video ID or YouTube URL" onkeydown="if(event.key==='Enter')ytPlayById()">
+      <button class="yt-btn" onclick="ytPlayById()">▶ Play</button>
+    </div>
+    <div class="yt-toolbar">
+      <div class="search-wrap" style="margin-bottom:0;">
+        <svg class="search-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input class="search" id="ytSearchInput" placeholder="Search YouTube..." style="font-size:.82rem;padding:11px 18px 11px 46px;" onkeydown="if(event.key==='Enter')ytSearchVideos()">
+      </div>
+      <button class="yt-btn" onclick="ytSearchVideos()">Search</button>
+    </div>
+    <div id="ytPlayer" class="yt-player"></div>
+    <div id="ytStatus" class="yt-status"></div>
+    <div class="yt-shell">
+      <div id="ytResults" class="yt-results"></div>
     </div>
   </div>
 
@@ -257,24 +233,9 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
     <div class="bg-panel">
       <div class="bg-title">Background Colors</div>
       <div class="bg-row">
-        <div class="cgroup">
-          <span class="clbl">Color 1</span>
-          <div class="cswatch" id="sw1" style="background:#090b1a">
-            <input type="color" value="#090b1a" id="c1" oninput="updateBg()">
-          </div>
-        </div>
-        <div class="cgroup">
-          <span class="clbl">Color 2</span>
-          <div class="cswatch" id="sw2" style="background:#121c3d">
-            <input type="color" value="#121c3d" id="c2" oninput="updateBg()">
-          </div>
-        </div>
-        <div class="cgroup">
-          <span class="clbl">Color 3</span>
-          <div class="cswatch" id="sw3" style="background:#1f1745">
-            <input type="color" value="#1f1745" id="c3" oninput="updateBg()">
-          </div>
-        </div>
+        <div class="cgroup"><span class="clbl">Color 1</span><div class="cswatch" id="sw1" style="background:#090b1a"><input type="color" value="#090b1a" id="c1" oninput="updateBg()"></div></div>
+        <div class="cgroup"><span class="clbl">Color 2</span><div class="cswatch" id="sw2" style="background:#121c3d"><input type="color" value="#121c3d" id="c2" oninput="updateBg()"></div></div>
+        <div class="cgroup"><span class="clbl">Color 3</span><div class="cswatch" id="sw3" style="background:#1f1745"><input type="color" value="#1f1745" id="c3" oninput="updateBg()"></div></div>
       </div>
       <div class="bg-title" style="margin-bottom:10px">Presets</div>
       <div class="presets-row">
@@ -294,11 +255,10 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
     <span>🌙 Waxing crescent · Clear skies</span>
   </div>
 
-</div><!-- /panel -->
-</div><!-- /page -->
+</div>
+</div>
 
 <script>
-/* Clock */
 function tick(){
   const n=new Date();
   document.getElementById('clock').textContent=n.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
@@ -306,13 +266,10 @@ function tick(){
 }
 setInterval(tick,1000);tick();
 
-/* Search */
 document.getElementById('searchBox').addEventListener('keydown',e=>{
-  if(e.key==='Enter'&&e.target.value.trim())
-    window.open('https://www.google.com/search?q='+encodeURIComponent(e.target.value.trim()),'_blank');
+  if(e.key==='Enter'&&e.target.value.trim()) window.open('https://www.google.com/search?q='+encodeURIComponent(e.target.value.trim()),'_blank');
 });
 
-/* Stars */
 const starsEl=document.getElementById('stars');
 for(let i=0;i<140;i++){
   const s=document.createElement('div');s.className='star';
@@ -323,7 +280,6 @@ for(let i=0;i<140;i++){
   starsEl.appendChild(s);
 }
 
-/* Tabs */
 function switchTab(name){
   document.querySelectorAll('[data-tab]').forEach(t=>t.classList.toggle('active',t.dataset.tab===name));
   document.querySelectorAll('.pview').forEach(p=>p.classList.toggle('active',p.id===name+'-page'));
@@ -331,78 +287,102 @@ function switchTab(name){
 }
 document.querySelectorAll('[data-tab]').forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.tab)));
 
-/* Background editor */
 function updateBg(){
-  const a=document.getElementById('c1').value,
-        b=document.getElementById('c2').value,
-        c=document.getElementById('c3').value;
+  const a=document.getElementById('c1').value,b=document.getElementById('c2').value,c=document.getElementById('c3').value;
   document.getElementById('sw1').style.background=a;
   document.getElementById('sw2').style.background=b;
   document.getElementById('sw3').style.background=c;
   document.body.style.background=`linear-gradient(135deg,${a},${b},${c})`;
 }
 function applyPreset(a,b,c){
-  document.getElementById('c1').value=a;
-  document.getElementById('c2').value=b;
-  document.getElementById('c3').value=c;
-  updateBg();
+  document.getElementById('c1').value=a;document.getElementById('c2').value=b;document.getElementById('c3').value=c;updateBg();
 }
 
-/* Player functions */
-function playMovie(id, type, title) {
+function playMovie(id, type) {
   const url = `https://cinesrc.st/embed/${type === 'movie' ? 'movie' : 'tv'}/${id}`;
   document.getElementById('playerIframe').src = url;
   document.getElementById('playerOverlay').classList.add('active');
 }
-
 function closePlayer() {
   document.getElementById('playerIframe').src = '';
   document.getElementById('playerOverlay').classList.remove('active');
 }
+document.getElementById('playerOverlay').addEventListener('click', function(e) { if (e.target === this) closePlayer(); });
 
-document.getElementById('playerOverlay').addEventListener('click', function(e) {
-  if (e.target === this) closePlayer();
-});
+const YT_API_KEY = 'AIzaSyB7x5zyGdt3_9JnaIWqQYrvNkcB6lef_xA';
+function ytExtractVideoId(raw){
+  let id = raw.trim();
+  try{
+    const url = new URL(id);
+    if(url.hostname.includes('youtu.be')) id = url.pathname.split('/').filter(Boolean).pop() || id;
+    else id = url.searchParams.get('v') || url.pathname.split('/').filter(Boolean).pop() || id;
+  }catch(e){}
+  return id;
+}
+function ytPlayById(){
+  const raw = document.getElementById('ytIdInput').value.trim();
+  if(!raw) return;
+  ytPlayVideo(ytExtractVideoId(raw));
+}
+function ytPlayVideo(videoId){
+  document.getElementById('ytPlayer').innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
+  document.getElementById('ytStatus').textContent = 'Playing video';
+}
+function ytSetStatus(text){ document.getElementById('ytStatus').textContent = text; }
+function ytEscape(text){ return String(text).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+async function ytSearchVideos(){
+  const query = document.getElementById('ytSearchInput').value.trim();
+  if(!query) return;
+  const resultsDiv = document.getElementById('ytResults');
+  resultsDiv.innerHTML = '';
+  ytSetStatus('Loading...');
+  try{
+    const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&type=video&q=${encodeURIComponent(query)}&key=${YT_API_KEY}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    resultsDiv.innerHTML = '';
+    if(!data.items || !data.items.length){ ytSetStatus('No videos found.'); return; }
+    data.items.forEach(item => {
+      const vid = item.id.videoId;
+      const title = ytEscape(item.snippet.title);
+      const channel = ytEscape(item.snippet.channelTitle);
+      const thumb = item.snippet.thumbnails.medium.url;
+      const card = document.createElement('div');
+      card.className = 'yt-card';
+      card.innerHTML = `<img src="${thumb}" alt="${title}" loading="lazy"><div class="yt-card-body"><h3>${title}</h3><p>${channel}</p><div class="yt-card-actions"><button onclick="ytPlayVideo('${vid}')">▶ Play Here</button><button onclick="window.open('https://www.youtube.com/watch?v=${vid}','_blank')">Open Video</button><button onclick="window.open('https://www.youtube.com/shorts/${vid}','_blank')">Open Short</button></div></div>`;
+      resultsDiv.appendChild(card);
+    });
+    ytSetStatus(data.items.length + ' results');
+  }catch(err){ ytSetStatus('Error loading videos.'); }
+}
+function openHubInNewTab(){
+  const pageHTML = document.documentElement.outerHTML;
+  const newTab = window.open('about:blank', '_blank');
+  if(newTab){ newTab.document.open(); newTab.document.write(pageHTML); newTab.document.close(); }
+  location.replace('https://www.google.com');
+}
 
-/* MOONLIGHT MOVIES — Using CineSrc & TMDB */
 (function () {
   var API_KEY  = 'ee533ebaec5bb9f6bb448a66c1d4ad08';
   var BASE     = 'https://api.themoviedb.org/3';
   var IMG      = 'https://image.tmdb.org/t/p/w185';
-
   var mvType = 'movie', mvCurPage = 1, mvQuery = '', mvDebounce = null;
   var mvLoaded = false, mvCache = {}, mvAbort = null;
   var elStatus, elGrid, elPageLbl, elSearch;
-
   function tmdbGet(path, cb) {
     if (mvCache[path]) { cb(mvCache[path]); return; }
     if (mvAbort) mvAbort.abort();
     mvAbort = window.AbortController ? new AbortController() : null;
-
     var sep = path.indexOf('?') === -1 ? '?' : '&';
     var url = BASE + path + sep + 'api_key=' + API_KEY;
-    setStatus('Loading…');
+    setStatus('Loading...');
     fetch(url, { method:'GET', headers:{ Accept:'application/json' }, mode:'cors', cache:'force-cache', signal: mvAbort ? mvAbort.signal : undefined })
-      .then(function (r) {
-        if (!r.ok) throw new Error('Unable to load movies');
-        return r.json();
-      })
-      .then(function (data) {
-        mvCache[path] = data;
-        cb(data);
-      })
-      .catch(function (err) {
-        if (err.name === 'AbortError') return;
-        setStatus('Error loading: ' + err.message);
-      });
+      .then(function (r) { if (!r.ok) throw new Error('Unable to load movies'); return r.json(); })
+      .then(function (data) { mvCache[path] = data; cb(data); })
+      .catch(function (err) { if (err.name === 'AbortError') return; setStatus('Error loading: ' + err.message); });
   }
-
   function setStatus(t) { if (elStatus) elStatus.textContent = t; }
-
-  function esc(s) {
-    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  }
-
+  function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
   function renderGrid(items) {
     elGrid.innerHTML = '';
     elGrid.style.pointerEvents = 'auto';
@@ -413,115 +393,55 @@ document.getElementById('playerOverlay').addEventListener('click', function(e) {
       var year   = date ? new Date(date).getFullYear() : '';
       var rating = item.vote_average ? '★ ' + item.vote_average.toFixed(1) : '';
       var poster = item.poster_path ? IMG + item.poster_path : '';
-
       var card = document.createElement('div');
-      card.className = 'mcard';
-      card.style.cursor = 'pointer';
-
+      card.className = 'mcard'; card.style.cursor = 'pointer';
       var thumb = document.createElement('div');
       thumb.className = 'mthumb';
       thumb.style.cssText = 'padding:0;height:90px;overflow:hidden;background:rgba(0,0,30,.7);position:relative;';
-
       if (poster) {
         var img = document.createElement('img');
-        img.src = poster;
-        img.alt = title;
-        img.loading = 'lazy';
-        img.decoding = 'async';
-        img.referrerPolicy = 'no-referrer';
+        img.src = poster; img.alt = title; img.loading = 'lazy'; img.decoding = 'async'; img.referrerPolicy = 'no-referrer';
         img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
-        img.onerror = function () {
-          thumb.innerHTML = '<span style="font-size:2rem;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">🎬</span>';
-        };
+        img.onerror = function () { thumb.innerHTML = '<span style="font-size:2rem;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">🎬</span>'; };
         thumb.appendChild(img);
-      } else {
-        thumb.innerHTML = '<span style="font-size:2rem;">🎬</span>';
-      }
-
+      } else { thumb.innerHTML = '<span style="font-size:2rem;">🎬</span>'; }
       if (rating) {
         var badge = document.createElement('span');
         badge.textContent = rating;
         badge.style.cssText = 'position:absolute;bottom:5px;right:6px;font-size:.6rem;background:rgba(0,0,20,.8);padding:2px 6px;border-radius:8px;color:#e8ecff;';
         thumb.appendChild(badge);
       }
-
       var info = document.createElement('div');
       info.className = 'minfo';
-      info.innerHTML = '<div class="mtitle" style="font-size:.75rem;line-height:1.3;">' + esc(title) + '</div>'
-        + '<div class="mmeta">' + (year ? year + ' · ' : '') + (mvType === 'movie' ? 'Movie' : 'TV') + '</div>';
-
-      card.appendChild(thumb);
-      card.appendChild(info);
-      card.addEventListener('click', (function(id, type, t) {
-        return function() {
-          playMovie(id, type, t);
-        };
-      })(item.id, mvType, title));
+      info.innerHTML = '<div class="mtitle" style="font-size:.75rem;line-height:1.3;">' + esc(title) + '</div>' + '<div class="mmeta">' + (year ? year + ' · ' : '') + (mvType === 'movie' ? 'Movie' : 'TV') + '</div>';
+      card.appendChild(thumb); card.appendChild(info);
+      card.addEventListener('click', (function(id, type) { return function() { playMovie(id, type); }; })(item.id, mvType));
       elGrid.appendChild(card);
     });
     setStatus(items.length + ' results · page ' + mvCurPage);
   }
-
   function doLoad() {
-    setStatus('Loading…');
-    elGrid.innerHTML = '';
-    elGrid.style.pointerEvents = 'none';
-    var path;
-    if (mvQuery.trim()) {
-      path = '/search/' + mvType + '?query=' + encodeURIComponent(mvQuery) + '&page=' + mvCurPage + '&include_adult=false';
-    } else {
-      path = '/' + mvType + '/popular?page=' + mvCurPage;
-    }
-    tmdbGet(path, function (data) {
-      renderGrid(data.results || []);
-    });
+    setStatus('Loading...'); elGrid.innerHTML = ''; elGrid.style.pointerEvents = 'none';
+    var path = mvQuery.trim() ? '/search/' + mvType + '?query=' + encodeURIComponent(mvQuery) + '&page=' + mvCurPage + '&include_adult=false' : '/' + mvType + '/popular?page=' + mvCurPage;
+    tmdbGet(path, function (data) { renderGrid(data.results || []); });
   }
-
-  window.mvEnsureLoaded = function () {
-    if (mvLoaded) return;
-    mvLoaded = true;
-    doLoad();
-  };
-
+  window.mvEnsureLoaded = function () { if (mvLoaded) return; mvLoaded = true; doLoad(); };
   window.mvSwitchTab = function (type) {
-    mvType = type; mvCurPage = 1; mvQuery = '';
-    elSearch.value = '';
+    mvType = type; mvCurPage = 1; mvQuery = ''; elSearch.value = '';
     document.getElementById('mvTabMovies').classList.toggle('active', type === 'movie');
     document.getElementById('mvTabTV').classList.toggle('active', type === 'tv');
-    document.getElementById('mvPageLbl').textContent = 'Page 1';
-    mvLoaded = true;
-    doLoad();
+    document.getElementById('mvPageLbl').textContent = 'Page 1'; mvLoaded = true; doLoad();
   };
-
   window.mvPage = function (dir) {
     if (dir === -1 && mvCurPage <= 1) return;
-    mvCurPage += dir;
-    document.getElementById('mvPageLbl').textContent = 'Page ' + mvCurPage;
-    mvLoaded = true;
-    doLoad();
+    mvCurPage += dir; document.getElementById('mvPageLbl').textContent = 'Page ' + mvCurPage; mvLoaded = true; doLoad();
   };
-
-  /* ── init ── */
   function init() {
-    elStatus    = document.getElementById('mvStatus');
-    elGrid      = document.getElementById('mvGrid');
-    elPageLbl   = document.getElementById('mvPageLbl');
-    elSearch    = document.getElementById('mvSearchInput');
-
-    elSearch.addEventListener('input', function () {
-      mvQuery = this.value; mvCurPage = 1; mvLoaded = true;
-      clearTimeout(mvDebounce);
-      mvDebounce = setTimeout(doLoad, 250);
-    });
-
+    elStatus = document.getElementById('mvStatus'); elGrid = document.getElementById('mvGrid'); elPageLbl = document.getElementById('mvPageLbl'); elSearch = document.getElementById('mvSearchInput');
+    elSearch.addEventListener('input', function () { mvQuery = this.value; mvCurPage = 1; mvLoaded = true; clearTimeout(mvDebounce); mvDebounce = setTimeout(doLoad, 250); });
     setStatus('Open Movies to load fast.');
   }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
 </script>
 </body>
