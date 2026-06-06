@@ -243,10 +243,24 @@ body{min-height:100vh;background:linear-gradient(135deg,#090b1a,#121c3d,#1f1745)
       <div class="toggle-row">
         <div class="toggle-info">
           <strong>Auto-Hide Mode</strong>
-          <span>On first load, Moonlight opens in a clean about:blank tab and this tab disappears from history.</span>
+          <span>On first load, opens Moonlight in a clean about:blank tab and hides this tab from history. Requires browser popup permission for this site.</span>
         </div>
         <label class="toggle">
           <input type="checkbox" id="autoHideToggle" onchange="setAutoHide(this.checked)">
+          <div class="toggle-track"></div>
+        </label>
+      </div>
+      <div id="autoHideStatus" style="margin-top:10px;font-size:.65rem;color:rgba(200,210,255,.4);display:none;"></div>
+    </div>
+    <div class="bg-panel">
+      <div class="bg-title">Security</div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <strong>Anti-Close Protection</strong>
+          <span>Shows a confirmation dialog when you try to close or leave this tab.</span>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="antiCloseToggle" onchange="setAntiClose(this.checked)">
           <div class="toggle-track"></div>
         </label>
       </div>
@@ -271,43 +285,87 @@ const SUNLIT_OS_URL = 'sunlit_os.html';
 // ─────────────────────────────────────────────────────────────────────────────
 
 // ── Auto-Hide Mode ────────────────────────────────────────────────────────────
-// Default ON. Reads from localStorage key 'ml_autohide'.
-// On first load (no 'ml_loaded' flag in sessionStorage), if enabled, clone this
-// page into a new about:blank tab and redirect this tab away from history.
+// Default ON. On first load attempts to open a new about:blank tab with the
+// page content and replace this tab with Google. If the browser blocks popups
+// (window.open returns null), we stay on the page normally — the user needs to
+// allow popups for this site in browser settings first.
 (function(){
   var enabled = localStorage.getItem('ml_autohide');
-  // default to 'on' if never set
   if(enabled === null){ localStorage.setItem('ml_autohide','1'); enabled='1'; }
   var alreadyHidden = sessionStorage.getItem('ml_loaded');
+
+  function syncUI(){
+    var el=document.getElementById('autoHideToggle');
+    if(el) el.checked=(localStorage.getItem('ml_autohide')==='1');
+    var ac=document.getElementById('antiCloseToggle');
+    if(ac) ac.checked=(localStorage.getItem('ml_anticlose')==='1');
+  }
+
   if(enabled==='1' && !alreadyHidden){
-    // mark the new tab so it doesn't auto-hide again
+    // Build cloned HTML with the session flag hardcoded so the new tab skips auto-hide
     var html = document.documentElement.outerHTML.replace(
       "sessionStorage.getItem('ml_loaded')",
-      "'1'||sessionStorage.getItem('ml_loaded')" // always truthy in cloned tab
+      "'1'"
     );
     var t = window.open('about:blank','_blank');
     if(t){
+      // Popup allowed — write page into new tab and hide this one
       t.document.open();
       t.document.write(html);
       t.document.close();
-      // new tab sets its own session flag
       try{ t.sessionStorage.setItem('ml_loaded','1'); }catch(e){}
+      location.replace('https://www.google.com');
+      return;
+    } else {
+      // Popup blocked — stay on this tab, show a status hint in settings
+      sessionStorage.setItem('ml_loaded','1');
+      document.addEventListener('DOMContentLoaded',function(){
+        syncUI();
+        var s=document.getElementById('autoHideStatus');
+        if(s){
+          s.style.display='block';
+          s.innerHTML='⚠ Popup blocked. To enable Auto-Hide, allow popups for this site in your browser settings, then reload.';
+        }
+      });
+      return;
     }
-    location.replace('https://www.google.com');
-    return;
   }
-  // mark this session so back-navigation doesn't re-trigger
+
   sessionStorage.setItem('ml_loaded','1');
-  // sync toggle UI once DOM ready
-  document.addEventListener('DOMContentLoaded',function(){
-    var el=document.getElementById('autoHideToggle');
-    if(el) el.checked=(localStorage.getItem('ml_autohide')==='1');
-  });
+  document.addEventListener('DOMContentLoaded', syncUI);
 })();
 
 function setAutoHide(on){
   localStorage.setItem('ml_autohide', on?'1':'0');
+  // clear the loaded flag so next fresh open re-attempts
+  sessionStorage.removeItem('ml_loaded');
+  var s=document.getElementById('autoHideStatus');
+  if(s) s.style.display='none';
 }
+
+// ── Anti-Close Protection ─────────────────────────────────────────────────────
+// Default OFF. Attaches/detaches a beforeunload handler based on localStorage.
+var _antiCloseActive = false;
+function _beforeUnloadHandler(e){ e.preventDefault(); e.returnValue=''; return ''; }
+
+function setAntiClose(on){
+  localStorage.setItem('ml_anticlose', on?'1':'0');
+  if(on && !_antiCloseActive){
+    window.addEventListener('beforeunload', _beforeUnloadHandler);
+    _antiCloseActive = true;
+  } else if(!on && _antiCloseActive){
+    window.removeEventListener('beforeunload', _beforeUnloadHandler);
+    _antiCloseActive = false;
+  }
+}
+
+// Apply anti-close on load if it was saved as on
+(function(){
+  if(localStorage.getItem('ml_anticlose')==='1'){
+    window.addEventListener('beforeunload', _beforeUnloadHandler);
+    _antiCloseActive = true;
+  }
+})();
 // ─────────────────────────────────────────────────────────────────────────────
 
 var _sunlitHTML = null; // cached fetched HTML
