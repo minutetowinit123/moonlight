@@ -349,7 +349,7 @@ function applyPreset(a,b,c){
 
 /* Player functions */
 function playMovie(id, type, title) {
-  const url = `https://cinesrc.st/${type === 'movie' ? 'movie' : 'series'}/${id}`;
+  const url = `https://cinesrc.st/embed/${type === 'movie' ? 'movie' : 'tv'}/${id}`;
   document.getElementById('playerIframe').src = url;
   document.getElementById('playerOverlay').classList.add('active');
 }
