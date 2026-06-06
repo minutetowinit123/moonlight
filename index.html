@@ -372,7 +372,7 @@ var _sunlitHTML = null; // cached fetched HTML
 
 function tick(){const n=new Date();document.getElementById('clock').textContent=n.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});document.getElementById('datestr').textContent=n.toLocaleDateString([],{weekday:'long',month:'long',day:'numeric'});}
 setInterval(tick,1000);tick();
-document.getElementById('searchBox').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.value.trim()) window.open"https://duckduckgo.com'+encodeURIComponent(e.target.value.trim()),'_blank');});
+document.getElementById('searchBox').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.value.trim()) window.open('https://www.google.com/search?q='+encodeURIComponent(e.target.value.trim()),'_blank');});
 const starsEl=document.getElementById('stars');for(let i=0;i<140;i++){const s=document.createElement('div');s.className='star';const sz=Math.random()*2.2+.4;s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;`+`--lo:${(Math.random()*.12+.04).toFixed(2)};--hi:${(Math.random()*.5+.15).toFixed(2)};`+`--d:${(Math.random()*5+2).toFixed(1)}s;--del:-${(Math.random()*7).toFixed(1)}s;`;starsEl.appendChild(s);}
 function switchTab(name){const activeName=name==='youtube'?'apps':name;document.querySelectorAll('[data-tab]').forEach(t=>t.classList.toggle('active',t.dataset.tab===activeName));document.querySelectorAll('.pview').forEach(p=>p.classList.toggle('active',p.id===name+'-page'));if(name==='movies'&&window.mvEnsureLoaded) window.mvEnsureLoaded();}
 document.querySelectorAll('[data-tab]').forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.tab)));
