@@ -327,6 +327,7 @@ for(let i=0;i<140;i++){
 function switchTab(name){
   document.querySelectorAll('[data-tab]').forEach(t=>t.classList.toggle('active',t.dataset.tab===name));
   document.querySelectorAll('.pview').forEach(p=>p.classList.toggle('active',p.id===name+'-page'));
+  if(name==='movies'&&window.mvEnsureLoaded) window.mvEnsureLoaded();
 }
 document.querySelectorAll('[data-tab]').forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.tab)));
 
@@ -367,22 +368,31 @@ document.getElementById('playerOverlay').addEventListener('click', function(e) {
 (function () {
   var API_KEY  = 'ee533ebaec5bb9f6bb448a66c1d4ad08';
   var BASE     = 'https://api.themoviedb.org/3';
-  var IMG      = 'https://image.tmdb.org/t/p/w342';
+  var IMG      = 'https://image.tmdb.org/t/p/w185';
 
   var mvType = 'movie', mvCurPage = 1, mvQuery = '', mvDebounce = null;
+  var mvLoaded = false, mvCache = {}, mvAbort = null;
   var elStatus, elGrid, elPageLbl, elSearch;
 
   function tmdbGet(path, cb) {
+    if (mvCache[path]) { cb(mvCache[path]); return; }
+    if (mvAbort) mvAbort.abort();
+    mvAbort = window.AbortController ? new AbortController() : null;
+
     var sep = path.indexOf('?') === -1 ? '?' : '&';
     var url = BASE + path + sep + 'api_key=' + API_KEY;
     setStatus('Loading…');
-    fetch(url, { method:'GET', headers:{ Accept:'application/json' }, mode:'cors' })
+    fetch(url, { method:'GET', headers:{ Accept:'application/json' }, mode:'cors', cache:'force-cache', signal: mvAbort ? mvAbort.signal : undefined })
       .then(function (r) {
         if (!r.ok) throw new Error('Unable to load movies');
         return r.json();
       })
-      .then(cb)
+      .then(function (data) {
+        mvCache[path] = data;
+        cb(data);
+      })
       .catch(function (err) {
+        if (err.name === 'AbortError') return;
         setStatus('Error loading: ' + err.message);
       });
   }
@@ -415,7 +425,10 @@ document.getElementById('playerOverlay').addEventListener('click', function(e) {
       if (poster) {
         var img = document.createElement('img');
         img.src = poster;
-        img.alt = esc(title);
+        img.alt = title;
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        img.referrerPolicy = 'no-referrer';
         img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
         img.onerror = function () {
           thumb.innerHTML = '<span style="font-size:2rem;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">🎬</span>';
@@ -464,12 +477,19 @@ document.getElementById('playerOverlay').addEventListener('click', function(e) {
     });
   }
 
+  window.mvEnsureLoaded = function () {
+    if (mvLoaded) return;
+    mvLoaded = true;
+    doLoad();
+  };
+
   window.mvSwitchTab = function (type) {
     mvType = type; mvCurPage = 1; mvQuery = '';
     elSearch.value = '';
     document.getElementById('mvTabMovies').classList.toggle('active', type === 'movie');
     document.getElementById('mvTabTV').classList.toggle('active', type === 'tv');
     document.getElementById('mvPageLbl').textContent = 'Page 1';
+    mvLoaded = true;
     doLoad();
   };
 
@@ -477,6 +497,7 @@ document.getElementById('playerOverlay').addEventListener('click', function(e) {
     if (dir === -1 && mvCurPage <= 1) return;
     mvCurPage += dir;
     document.getElementById('mvPageLbl').textContent = 'Page ' + mvCurPage;
+    mvLoaded = true;
     doLoad();
   };
 
@@ -488,12 +509,12 @@ document.getElementById('playerOverlay').addEventListener('click', function(e) {
     elSearch    = document.getElementById('mvSearchInput');
 
     elSearch.addEventListener('input', function () {
-      mvQuery = this.value; mvCurPage = 1;
+      mvQuery = this.value; mvCurPage = 1; mvLoaded = true;
       clearTimeout(mvDebounce);
-      mvDebounce = setTimeout(doLoad, 400);
+      mvDebounce = setTimeout(doLoad, 250);
     });
 
-    doLoad();
+    setStatus('Open Movies to load fast.');
   }
 
   if (document.readyState === 'loading') {
